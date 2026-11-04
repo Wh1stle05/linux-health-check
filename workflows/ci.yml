@@ -1,0 +1,33 @@
+
+name: Shell CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Check Bash syntax
+        run: |
+          bash -n health-check.sh
+          bash -n tests/test-inode.sh
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck health-check.sh
+          shellcheck tests/test-inode.sh
+
+      - name: Run tests
+        run: |
+          bash tests/test-inode.sh
