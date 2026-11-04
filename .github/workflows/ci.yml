@@ -36,3 +36,19 @@ jobs:
       - name: Run automated tests
         run: |
           bash tests/test-inode.sh
+          bash tests/test-inode-collector.sh
+
+      - name: Check Bash syntax
+        run: |
+          bash -n health-check.sh
+          bash -n lib/inode.sh
+          bash -n tests/test-inode.sh
+          bash -n tests/test-inode-collector.sh
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck -x -P . \
+          health-check.sh \
+          lib/inode.sh \
+          tests/test-inode.sh \
+          tests/test-inode-collector.sh

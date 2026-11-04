@@ -45,19 +45,7 @@ check_http() {
     return 1
 }
 
-check_inode() {
-    local iusage
 
-    if ! iusage=$(df -i / | awk 'NR==2 {
-        gsub(/%/, "", $5)
-        print $5
-    }'); then
-        log "ERROR" "Inode collection failed"
-        return 2
-    fi
-
-    evaluate_inode "$iusage" "$INODE_THRESHOLD"
-}
 
 check_disk() {
     local usage
