@@ -33,7 +33,7 @@ jobs:
         run: |
           shellcheck health-check.sh
           shellcheck tests/inode-test.sh
-          shellcheck tests/test.sh
+          shellcheck -x tests/test.sh
 
       - name: Run automated tests
         run: |
