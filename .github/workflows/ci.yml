@@ -26,15 +26,13 @@ jobs:
       - name: Check Bash syntax
         run: |
           bash -n health-check.sh
-          bash -n tests/inode-test.sh
-          bash -n tests/test.sh
+          bash -n lib/inode.sh
+          bash -n tests/test-inode.sh
 
       - name: Run ShellCheck
         run: |
-          shellcheck health-check.sh
-          shellcheck tests/inode-test.sh
-          shellcheck -x -P tests tests/test.sh
+          shellcheck -x -P . health-check.sh lib/inode.sh tests/test-inode.sh
 
       - name: Run automated tests
         run: |
-          bash tests/test.sh
+          bash tests/test-inode.sh

@@ -2,17 +2,19 @@
 
 set -u
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/inode-test.sh"
+ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=lib/inode.sh
+source "$ROOT/lib/inode.sh"
 
 FAILED=0
 
 assert_status() {
     local input="$1"
     local expected="$2"
+    local threshold="${3:-85}"
     local actual
 
-    if evaluate_inode "$input" >/dev/null; then
+    if evaluate_inode "$input" "$threshold" >/dev/null; then
         actual=0
     else
         actual=$?
@@ -35,6 +37,10 @@ assert_status "100" 1
 assert_status "101" 2
 assert_status "abc" 2
 assert_status "" 2
+assert_status "74" 0 75
+assert_status "75" 1 75
+assert_status "50" 2 101
+assert_status "50" 2 abc
 
 printf 'Failed tests: %d\n' "$FAILED"
 
