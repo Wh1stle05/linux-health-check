@@ -1,17 +1,22 @@
 
-name: Shell CI
+name: Linux Health Checker CI
 
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Install ShellCheck
         run: |
@@ -21,13 +26,15 @@ jobs:
       - name: Check Bash syntax
         run: |
           bash -n health-check.sh
-          bash -n tests/test-inode.sh
+          bash -n tests/inode-test.sh
+          bash -n tests/test.sh
 
       - name: Run ShellCheck
         run: |
           shellcheck health-check.sh
-          shellcheck tests/test-inode.sh
+          shellcheck tests/inode-test.sh
+          shellcheck tests/test.sh
 
-      - name: Run tests
+      - name: Run automated tests
         run: |
-          bash tests/test-inode.sh
+          bash tests/test.sh
