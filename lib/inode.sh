@@ -35,7 +35,7 @@ evaluate_inode() {
 check_inode() {
     local iusage
 
-    if ! iusage=$(df -i / | awk 'NR==2 {
+    if ! iusage=$(df -Pi / | awk 'NR==2 {
         gsub(/%/, "", $5)
         print $5
     }'); then
